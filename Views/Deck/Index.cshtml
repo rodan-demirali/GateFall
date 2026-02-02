@@ -1,0 +1,82 @@
+﻿@model IEnumerable<GateFall.Models.Deck>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-6 fw-bold">Popüler Desteler</h1>
+            <p class="text-muted">Topluluk tarafından oluşturulan en yeni kapışmalar.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary btn-lg">
+            <i class="bi bi-plus-lg"></i> Kendi Desteni Yarat
+        </a>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-md-6 mx-auto">
+            <div class="input-group input-group-lg">
+                <input type="text" class="form-control" placeholder="Bir konu ara... (Örn: Oyunlar, Yemekler)">
+                <button class="btn btn-outline-secondary" type="button">Ara</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm deck-card">
+                    <div class="position-relative">
+                        <img src="~/images/decks/@item.CoverImageUrl" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
+                        <span class="position-absolute top-0 end-0 badge bg-dark m-2">
+                            @item.Cards.Count Kart
+                        </span>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate" title="@item.Title">@item.Title</h5>
+                        <p class="card-text text-muted small text-truncate">@item.Description</p>
+                    </div>
+
+                    <div class="card-footer bg-white border-top-0">
+                        <div class="d-grid gap-2">
+                            @if (item.Cards.Count >= 2)
+                            {
+                                <a asp-controller="Game" asp-action="Start" asp-route-deckId="@item.Id" class="btn btn-success">
+                                    Başla
+                                </a>
+                            }
+                            else
+                            {
+                                <button class="btn btn-secondary" disabled>Yetersiz Kart</button>
+                            }
+
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">
+                                İncele / Ekle
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <h3 class="text-muted">Henüz hiç deste oluşturulmamış.</h3>
+            <p>İlk olmaya ne dersin?</p>
+            <a asp-action="Create" class="btn btn-primary mt-2">Hemen Oluştur</a>
+        </div>
+    }
+</div>
+
+<style>
+    .deck-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .deck-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+</style>

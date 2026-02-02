@@ -1,0 +1,62 @@
+﻿@using System.Security.Claims
+@model GateFall.Models.Deck
+
+<div class="container mt-4">
+    <div class="card mb-4">
+        <div class="row g-0">
+            <div class="col-md-2">
+                <img src="~/images/decks/@Model.CoverImageUrl" class="img-fluid rounded-start" alt="@Model.Title" style="height: 150px; object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h2 class="card-title">@Model.Title</h2>
+                    <p class="card-text">@Model.Description</p>
+                    <p class="text-muted"><small>Toplam Kart: @Model.Cards.Count</small></p>
+                </div>
+            </div>
+            <div class="col-md-2 d-flex align-items-center justify-content-center">
+                <a asp-controller="Game" asp-action="Start" asp-route-deckId="@Model.Id" class="btn btn-success btn-lg">OYNA ></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4 bg-light">
+        <div class="card-body">
+            <h5 class="card-title">Bu Desteye Kart Ekle</h5>
+            <form asp-action="AddCards" enctype="multipart/form-data" method="post">
+                <input type="hidden" name="deckId" value="@Model.Id" />
+
+                <div class="input-group">
+                    <input type="file" name="cardImages" class="form-control" multiple accept="image/*" required>
+                    <button class="btn btn-primary" type="submit">Yükle</button>
+                </div>
+                <small class="text-muted">Birden fazla resim seçebilirsiniz (Ctrl tuşuna basılı tutarak).</small>
+            </form>
+        </div>
+    </div>
+
+    <h3>Kart Listesi</h3>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        @foreach (var card in Model.Cards)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <img src="~/images/cards/@card.ImageUrl" class="card-img-top" alt="@card.Name" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@card.Name</h5>
+        
+                        @if (Model.AppUserId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+                        {
+                            <form asp-action="DeleteCard" method="post" onsubmit="return confirm('Bu kartı silmek istediğine emin misin?');" class="mt-2">
+                                <input type="hidden" name="cardId" value="@card.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger w-100">
+                                    <i class="bi bi-trash"></i> Sil
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

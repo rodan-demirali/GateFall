@@ -1,0 +1,29 @@
+﻿@model GateFall.ViewModels.CreateDeckViewModel
+
+<div class="container mt-5">
+    <h2>Yeni Deste Oluştur</h2>
+    <hr />
+
+    <form asp-action="Create" enctype="multipart/form-data" method="post">
+
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CoverImage" class="form-label"></label>
+            <input asp-for="CoverImage" type="file" class="form-control" accept="image/*" />
+            <span asp-validation-for="CoverImage" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Oluştur</button>
+        <a asp-action="Index" class="btn btn-secondary">İptal</a>
+    </form>
+</div>

@@ -1,0 +1,51 @@
+﻿@model GateFall.ViewModels.GameViewModel
+
+<div class="container text-center mt-5">
+    <h2 class="mb-4">Tur @Model.RoundNumber</h2>
+
+    <div class="row align-items-center">
+        <div class="col-md-5">
+            <div class="card h-100 option-card" onclick="selectOption(@Model.OptionA_Id)">
+                <img src="~/images/cards/@Model.OptionA_Image" class="card-img-top" style="height: 400px; object-fit: cover; cursor: pointer;">
+                <div class="card-body">
+                    <h3>@Model.OptionA_Name</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <h1 class="display-3 fw-bold text-danger">VS</h1>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card h-100 option-card" onclick="selectOption(@Model.OptionB_Id)">
+                <img src="~/images/cards/@Model.OptionB_Image" class="card-img-top" style="height: 400px; object-fit: cover; cursor: pointer;">
+                <div class="card-body">
+                    <h3>@Model.OptionB_Name</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="gameForm" asp-action="MakeChoice" method="post" style="display:none;">
+        <input type="hidden" name="selectedId" id="selectedIdInput" />
+    </form>
+</div>
+
+<script>
+    // Resme tıklandığında bu fonksiyon çalışır
+    function selectOption(id) {
+        document.getElementById('selectedIdInput').value = id;
+        document.getElementById('gameForm').submit();
+    }
+</script>
+
+<style>
+    /* Üzerine gelince belli olsun diye ufak CSS */
+    .option-card:hover {
+        transform: scale(1.02);
+        transition: transform 0.2s;
+        border: 3px solid #007bff;
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+</style>
